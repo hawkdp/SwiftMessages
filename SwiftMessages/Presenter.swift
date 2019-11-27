@@ -408,12 +408,16 @@ class Presenter: NSObject {
 
         guard let containerView = presentationContext.viewValue() else { return }
         if let windowViewController = presentationContext.viewControllerValue() as? WindowViewController {
+            #if SWIFTMESSAGES_APP_EXTENSIONS
+            windowViewController.install(becomeKey: becomeKeyWindow)
+            #else
             if #available(iOS 13, *) {
                 let scene = UIApplication.shared.keyWindow?.windowScene
                 windowViewController.install(becomeKey: becomeKeyWindow, scene: scene)
             } else {
                 windowViewController.install(becomeKey: becomeKeyWindow)
             }
+            #endif
         }
         installMaskingView(containerView: containerView)
         installInteractive()
